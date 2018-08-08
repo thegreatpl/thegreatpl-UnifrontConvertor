@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,6 +48,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="unifont-10.0.07\font\plane00\custom00.hex" />
+    <None Include="unifont-10.0.07\font\plane00\hangul-syllables.hex" />
+    <None Include="unifont-10.0.07\font\plane00\omit.hex" />
+    <None Include="unifont-10.0.07\font\plane00\plane00-nonprinting.hex" />
+    <None Include="unifont-10.0.07\font\plane00\plane00-unassigned.hex" />
+    <None Include="unifont-10.0.07\font\plane00\pua.hex" />
+    <None Include="unifont-10.0.07\font\plane00\README" />
+    <None Include="unifont-10.0.07\font\plane00\spaces.hex" />
+    <None Include="unifont-10.0.07\font\plane00\unifont-base.hex">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="unifont-10.0.07\font\plane00\wqy.hex" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="unifont-10.0.07.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="unifont-10.0.07\font\plane00\plane00-combining.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
