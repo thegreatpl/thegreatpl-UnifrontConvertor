@@ -44,15 +44,18 @@ namespace UnifontConvertor
                     var name = $"{y.ToString("X2")}{x.ToString("X2")}";
                     Console.WriteLine(name); 
                     var character = unifont.Clone(new Rectangle(xdx, ydx, 16, 16), unifont.PixelFormat);
-                    var pallete = character.Palette;
-                    pallete.Entries[0] = foreground;
-                    pallete.Entries[1] = background;
-                    character.Palette = pallete;
+                    //var pallete = character.Palette;
+                    //pallete.Entries[0] = foreground;
+                    //pallete.Entries[1] = background;
+                    //character.Palette = pallete;
+                    character = ConvertColours(character); 
 
                     if (hexes.ContainsKey(name) && hexes[name].Length < 33)
                     {
                         character = Move16x8ToCenter(character); 
                     }
+
+                    
 
                     character.Save($"{directory}/U+{name}.png", System.Drawing.Imaging.ImageFormat.Png);
                     y++; 
@@ -64,7 +67,7 @@ namespace UnifontConvertor
         public static Bitmap Move16x8ToCenter(Bitmap original)
         {
             var newbitmap = new Bitmap(16, 16); 
-            newbitmap.Palette = original.Palette; 
+           // newbitmap.Palette = original.Palette; 
             for (int xdx = 0; xdx <=8; xdx++)
             {
                 for (int ydx = 0; ydx < original.Height; ydx++)
@@ -74,6 +77,27 @@ namespace UnifontConvertor
             }
 
             return newbitmap; 
+        }
+
+
+        public static Bitmap ConvertColours(Bitmap oldbitmap)
+        {
+            var bitmap = new Bitmap(16, 16);
+            for (int xdx = 0; xdx < oldbitmap.Width; xdx++)
+            {
+                for (int ydx = 0; ydx < oldbitmap.Height; ydx++)
+                {
+                    var oldpix = oldbitmap.GetPixel(xdx, ydx);
+                    var white = Color.White; 
+                    if (oldpix.Name == "ff000000")
+                        bitmap.SetPixel(xdx, ydx, foreground);
+                    else
+                        bitmap.SetPixel(xdx, ydx, background); 
+                }
+            }
+
+
+            return bitmap; 
         }
     }
 
