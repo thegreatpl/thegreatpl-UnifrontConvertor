@@ -15,25 +15,36 @@ namespace UnifontConvertor
         static Color foreground = Color.White;
         static void Main(string[] args)
         {
-            Bitmap unifont = new Bitmap("unifont-10.0.07.bmp");
+            Bitmap unifont = new Bitmap("unifont-11.0.01.bmp");
 
-            Dictionary<string, string> hexes = new Dictionary<string, string>(); 
+            Dictionary<string, string> hexes = new Dictionary<string, string>();
 
             using (var reader = File.OpenText(@"unifont-10.0.07\font\plane00\unifont-base.hex"))
             {
-                string str; 
+                string str;
                 while ((str = reader.ReadLine()) != null)
                 {
                     var split = str.Split(':');
-                    hexes.Add(split[0], split[1]); 
+                    hexes.Add(split[0], split[1]);
                 }
             }
 
             string directory = @"D:\Users\thegreatpl\Desktop\personal projects\Unicode images";// $"{Directory.GetCurrentDirectory()}/output";
 
             if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory); 
+                Directory.CreateDirectory(directory);
 
+            CreatePlane(directory, unifont, hexes);
+
+
+            var plane1 = new Bitmap("unifont_upper-11.0.01.bmp");
+
+            CreatePlane(directory, plane1, new Dictionary<string, string>(), "1"); 
+
+        }
+
+        static void CreatePlane(string directory, Bitmap unifont, Dictionary<string, string> hexes, string plane = "")
+        { 
             //31, 63. 
             int x = 0; 
             for (int xdx = 32; xdx < unifont.Width; xdx += 16)
@@ -41,7 +52,7 @@ namespace UnifontConvertor
                 int y = 0; 
                 for (int ydx = 64; ydx < unifont.Height; ydx += 16)
                 {
-                    var name = $"{y.ToString("X2")}{x.ToString("X2")}";
+                    var name = $"{plane}{y.ToString("X2")}{x.ToString("X2")}";
                     Console.WriteLine(name); 
                     var character = unifont.Clone(new Rectangle(xdx, ydx, 16, 16), unifont.PixelFormat);
                     //var pallete = character.Palette;
