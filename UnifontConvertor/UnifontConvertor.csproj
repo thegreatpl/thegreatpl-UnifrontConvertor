@@ -63,8 +63,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="unifont-10.0.07\font\plane00\plane00-combining.txt" />
-    <Content Include="unifont-11.0.01.bmp" />
-    <Content Include="unifont_upper-11.0.01.bmp" />
+    <Content Include="unifont-11.0.01.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="unifont_upper-11.0.01.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

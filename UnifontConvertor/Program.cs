@@ -11,8 +11,26 @@ namespace UnifontConvertor
 {
     class Program
     {
-        static Color background = Color.Transparent;
+        static Color background = Color.Black;
         static Color foreground = Color.White;
+
+        static List<string> ExpandEdges = new List<string>()
+        {
+            "U+255A",
+            "U+2554",
+            "U+255D",
+            "U+2557",
+            "U+2569",
+            "U+2566",
+            "U+2563",
+            "U+2560",
+            "U+2550",
+            "U+2561",
+            "U+255E",
+            "U+256C"
+        };   
+
+
         static void Main(string[] args)
         {
             Bitmap unifont = new Bitmap("unifont-11.0.01.bmp");
@@ -29,7 +47,7 @@ namespace UnifontConvertor
                 }
             }
 
-            string directory = @"D:\Users\thegreatpl\Desktop\personal projects\Unicode images";// $"{Directory.GetCurrentDirectory()}/output";
+            string directory = @"D:\Users\thegreatpl\Desktop\personal projects\Unicode images\blackbackground";// $"{Directory.GetCurrentDirectory()}/output";
 
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
@@ -69,6 +87,13 @@ namespace UnifontConvertor
                     
 
                     character.Save($"{directory}/U+{name}.png", System.Drawing.Imaging.ImageFormat.Png);
+
+                    if (ExpandEdges.Contains("U+"+ name))
+                    {
+
+                        ExtendFromCenter(character).Save($"{directory}/U+{name}_extended.png", System.Drawing.Imaging.ImageFormat.Png);
+                    }
+
                     y++; 
                 }
                 x++; 
@@ -77,8 +102,12 @@ namespace UnifontConvertor
 
         public static Bitmap Move16x8ToCenter(Bitmap original)
         {
-            var newbitmap = new Bitmap(16, 16); 
-           // newbitmap.Palette = original.Palette; 
+            var newbitmap = new Bitmap(16, 16);
+            for (int xdx = 0; xdx < newbitmap.Width; xdx++)
+                for (int ydx = 0; ydx < newbitmap.Height; ydx++)
+                    newbitmap.SetPixel(xdx, ydx, background);
+
+            // newbitmap.Palette = original.Palette; 
             for (int xdx = 0; xdx <=8; xdx++)
             {
                 for (int ydx = 0; ydx < original.Height; ydx++)
@@ -90,10 +119,33 @@ namespace UnifontConvertor
             return newbitmap; 
         }
 
+        /// <summary>
+        /// Some of the tiles can be used for walls, but are in the 8*16 section. Since we expanded these out to 16*16, 
+        /// they don't reach the edge of the tile. This will take the last row and fill the remaining spots. 
+        /// </summary>
+        /// <param name="centered"></param>
+        /// <returns></returns>
+        public static Bitmap ExtendFromCenter(Bitmap centered)
+        {
+            for(int ydx = 0; ydx < 16; ydx++)
+            {
+                for (int xdx = 0; xdx < 4; xdx++)
+                {
+                    centered.SetPixel(xdx, ydx, centered.GetPixel(4, ydx)); 
+                }
+                for (int xdx = 11; xdx < 16; xdx++)
+                {
+                    centered.SetPixel(xdx, ydx, centered.GetPixel(11, ydx));
+                }
+            }
+            return centered; 
+        }
+
 
         public static Bitmap ConvertColours(Bitmap oldbitmap)
         {
             var bitmap = new Bitmap(16, 16);
+
             for (int xdx = 0; xdx < oldbitmap.Width; xdx++)
             {
                 for (int ydx = 0; ydx < oldbitmap.Height; ydx++)
