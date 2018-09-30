@@ -34,6 +34,11 @@ namespace UnifontConvertor
     class Program
     {
         /// <summary>
+        /// Place where the image files will be created. 
+        /// </summary>
+        static string PngDirectory = @"D:\Users\thegreatpl\Desktop\personal projects\Unicode images\blackbackground";
+
+        /// <summary>
         /// Background colour of the resulting png images. 
         /// </summary>
         static Color background = Color.Black;
@@ -82,17 +87,16 @@ namespace UnifontConvertor
                 }
             }
 
-            string directory = @"D:\Users\thegreatpl\Desktop\personal projects\Unicode images\blackbackground";// $"{Directory.GetCurrentDirectory()}/output";
 
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
+            if (!Directory.Exists(PngDirectory))
+                Directory.CreateDirectory(PngDirectory);
 
-            CreatePlane(directory, unifont, hexes);
+            CreatePlane(PngDirectory, unifont, hexes);
 
             //second plane. 
             var plane1 = new Bitmap("unifont_upper-11.0.01.bmp");
 
-            CreatePlane(directory, plane1, new Dictionary<string, string>(), "1"); 
+            CreatePlane(PngDirectory, plane1, new Dictionary<string, string>(), "1"); 
 
         }
 
